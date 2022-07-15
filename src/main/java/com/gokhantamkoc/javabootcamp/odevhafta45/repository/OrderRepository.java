@@ -3,6 +3,8 @@ package com.gokhantamkoc.javabootcamp.odevhafta45.repository;
 import com.gokhantamkoc.javabootcamp.odevhafta45.model.Order;
 import com.gokhantamkoc.javabootcamp.odevhafta45.model.OrderDetail;
 import com.gokhantamkoc.javabootcamp.odevhafta45.model.Owner;
+import com.gokhantamkoc.javabootcamp.odevhafta45.model.Product;
+import com.gokhantamkoc.javabootcamp.odevhafta45.service.ProductService;
 import com.gokhantamkoc.javabootcamp.odevhafta45.util.DatabaseConnection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -96,6 +98,32 @@ public class OrderRepository {
 
     public List<OrderDetail> getOrderDetails(long orderId) {
         // BU METHODU 2. GOREV ICIN DOLDURUNUZ
+        Order order= this.get(orderId);
+        List<OrderDetail> orderDetails = new ArrayList<OrderDetail>();
+        final String SQL = "SELECT id,status,type,order_id,product_id,amount,amount_type FROM public.order_detail WHERE order_id = ?";
+        if(order !=null){
+            try(PreparedStatement preparedStatement = databaseConnection.getConnection().prepareStatement(SQL)) {
+                preparedStatement.setLong(1,orderId);
+                ResultSet resSet = preparedStatement.executeQuery();
+                while (resSet.next()){
+                    long id = resSet.getLong("id");
+                    String status = resSet.getString("status");
+                    String type = resSet.getString("type");
+                    long product_id = resSet.getLong("product_id");
+                    float amount = resSet.getLong("amount");
+                    String amount_type = resSet.getString("amount_type");
+
+                    Product product = this.productRepository.get(product_id);
+
+                    orderDetails.add(new OrderDetail(id,status,type,order,product,amount,amount_type));
+                }
+            }catch(Exception e){
+                e.printStackTrace();
+                throw new RuntimeException(e.getMessage());
+            }
+        }
+
+        return orderDetails;
     }
 
     public void save(Order order) throws RuntimeException {
