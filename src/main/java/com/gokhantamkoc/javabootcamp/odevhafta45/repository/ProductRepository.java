@@ -3,6 +3,8 @@ package com.gokhantamkoc.javabootcamp.odevhafta45.repository;
 import com.gokhantamkoc.javabootcamp.odevhafta45.model.Product;
 import com.gokhantamkoc.javabootcamp.odevhafta45.util.DatabaseConnection;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -12,6 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
+@Getter
+@Setter
 @AllArgsConstructor
 public class ProductRepository {
 
