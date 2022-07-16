@@ -2,6 +2,7 @@ package com.gokhantamkoc.javabootcamp.odevhafta45.repository;
 
 import com.gokhantamkoc.javabootcamp.odevhafta45.model.Product;
 import com.gokhantamkoc.javabootcamp.odevhafta45.util.DatabaseConnection;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
+@AllArgsConstructor
 public class ProductRepository {
 
     public static Object get;
@@ -20,6 +22,7 @@ public class ProductRepository {
     public void setDatabaseConnection(DatabaseConnection databaseConnection) {
         this.databaseConnection = databaseConnection;
     }
+
 
     public List<Product> getAll() {
         final String SQL = "SELECT id, name, description FROM public.product";
@@ -82,8 +85,8 @@ public class ProductRepository {
 
     public void update(Product product) throws RuntimeException {
         Product uProduct = this.get(product.getId());
-        final String SQL = "UPDATE public.product SET name = ?, description = ? where id = ? ";
         if (uProduct != null){
+            final String SQL = "UPDATE public.product SET name = ?, description = ? where id = ? ";
             try(PreparedStatement preparedStatement = databaseConnection.getConnection().prepareStatement(SQL)) {
                 String name = product.getName();
                 String description = product.getDescription();
@@ -91,12 +94,10 @@ public class ProductRepository {
                 preparedStatement.setString(1,name);
                 preparedStatement.setString(2,description);
                 preparedStatement.setLong(3,id);
-
                 int affectedRows = preparedStatement.executeUpdate();
                 if (affectedRows<1){
                     throw new RuntimeException("Product "+product.getName()+" could not be updated !!");
                 }
-
             }catch (Exception e){
                 e.printStackTrace();
                 throw new RuntimeException(e.getMessage());
