@@ -19,7 +19,6 @@ import java.util.List;
 @AllArgsConstructor
 public class ProductRepository {
 
-    public static Object get;
     DatabaseConnection databaseConnection;
 
     @Autowired
