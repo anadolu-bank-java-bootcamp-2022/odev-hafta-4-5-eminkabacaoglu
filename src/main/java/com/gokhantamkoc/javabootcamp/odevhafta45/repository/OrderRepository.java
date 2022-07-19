@@ -110,7 +110,7 @@ public class OrderRepository {
                     String status = resSet.getString("status");
                     String type = resSet.getString("type");
                     long product_id = resSet.getLong("product_id");
-                    float amount = resSet.getLong("amount");
+                    float amount = resSet.getFloat("amount");
                     String amount_type = resSet.getString("amount_type");
 
                     Product product = this.productRepository.get(product_id);
